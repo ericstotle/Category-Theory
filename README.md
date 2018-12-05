@@ -1,2 +1,2 @@
 # Category-Theory
-Handy summaries for learning category theory. 
+Handy summaries I'm putting together for learning category theory. 
