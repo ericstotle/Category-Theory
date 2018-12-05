@@ -1,0 +1,100 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{tikz-cd}
+\usepackage{pdfpages}
+\linespread{1.5}
+\title{A summary of Lawvere's Elementary theory of the category of sets (ETCS)}
+
+\begin{document}
+
+\maketitle
+
+A category C consists in:
+\begin{enumerate}
+    \item a class of objects in the category $ob(C)$.
+    \item a class of morphisms between objects in $ob(C)$ denoted $hom(C)$.
+    \item for every morphism $f$ the operator $\longrightarrow$ denoting the home and destination $f: A \longrightarrow B$. The arrow operator indicates $f$'s domain $dom (f) = A$ and codomain $cod (f) = B$. The class of all morphisms having domain $A$ and codomain $B$ is denoted $hom(A,B)$.
+    \item for every pair of morphisms $f: A \longrightarrow B$ and $g: B \longrightarrow C$ such that $dom (g) = cod (f)$ a binary composition operator $\circ$ such that $g \circ f = dom (f) \longrightarrow cod (g)$, that is $g \circ f = A \longrightarrow C$. For any morphism $f: A \longrightarrow B$, $g: B \longrightarrow C$, and $h: C \longrightarrow D$ it holds that $h \circ (g \circ f) = (h \circ g) \circ f$.
+    \item for any $A \in ob(C)$ an element $id_{A}: A \longrightarrow A$ in $hom(C)$ called the identity morphism, which satisfies identity, meaning that for any morphism $f: A \longrightarrow B$ it holds that $id_{B} \circ f = f$ and $f \circ id_{A}$.
+\end{enumerate}
+Composition ($\circ$) is a monoid since it satisfies associativity and identity.
+
+Example : An arbitrary set $S$ forms a category. Proof:
+\begin{enumerate}
+    \item The class of objects is non-empty (there is $S$).
+    \item The class of morphisms is non-empty since there is at minimum $id_{S}: S \longrightarrow S$, where the domain and codomain happen to be the same. If there is another set $T$ then there is another set $S \times T = [(s,t) | s \in S, t \in T]$. Since $S \times T$ exists $\mathcal{P}(S \times T)$ exists and it follows that $T^{S} = [f \in \mathcal{P}(S \times T)| f: S \longrightarrow T]$ exists, which is just $hom(S,T)$.
+    \item $id_{S}$ can be composed. Moreover, if in addition to $f$ there is a function $g$ from $T$ to $U$ and $dom(g) = cod(f)$ then we can compose them to make a third function $g \circ f$.
+    \item Composing $id_{S}$ is obviously associative. Composing $f$ and $g$ with an $h$ such that $dom(h) = cod(g)$ is also associative.
+\end{enumerate}
+
+\section*{Axiom 1: There exists a terminal object and an initial object}
+Definition: Let $C$ be a category. Let $I$ and $T$ belong to $ob(C)$. $I$ is an initial object and $1$ a terminal object of $C$ if:
+\begin{itemize}
+  \item for any $A$ in $ob(C)$ there is the unique morphism $I_{A}: I \longrightarrow A$.
+  \item for any $A$ in $ob(C)$ there is the unique morphism $T_{A}: A \longrightarrow T$.
+\end{itemize}
+
+\noindent If there is another initial object $I'$ in addition to $I$ then $I$ and $I'$ are the same object. Let $I$ and $I'$ be terminal objects of $C$. There exists morphisms $f: I \longrightarrow I'$ and $g: I' \longrightarrow I$. $g$ is an inverse of $f$ and $f \circ g = id_{I'}$ and $g \circ f = id_{I}$. Hence $I$ and $I'$ are isomorphic. We have shown that if $I$ is an initial object of $C$ then $I$ is uniquely defined up to isomorphism. By a similar argument we can demonstrate the uniqueness of $T$.
+
+\section*{Axiom 2: Initial and terminal objects are not isomorphic}
+$I$ is a single object that maps to every object. $T$ is a single object that every object maps to. There do no exist inverses for $I_{A}$ or $T_{A}$ because a reverse of these relations would not a be function.
+
+\section*{Axiom 3: Cartesian products}
+Let $C$ be a category and $A$ and $B$ $\in ob(C)$. $\pi _{A}, \pi _{B}: A \times B \rightrightarrows A,B$ is a cartesian product if there is a unique morphism $h: C \longrightarrow A \times B$ such that this diagram commutes:
+
+\usetikzlibrary{positioning}
+\begin{tikzpicture}
+  \node (s) {$S$};
+  \node (xy) [below=2 of s] {$A \times \mathbf{B}$};
+  \node (x) [left=of xy] {$A$};
+  \node (y) [right=of xy] {$B$};
+  \draw[->] (s) to node [sloped, above] {$f$} (y);
+  \draw[<-] (x) to node [sloped, above] {$g$} (s);
+  \draw[->, dashed] (s) to node {$~~~h$} (xy);
+  \draw[->] (xy) to node [below] {$\pi_A$} (x);
+  \draw[->] (xy) to node [below] {$\pi_B$} (y);
+\end{tikzpicture}
+
+\noindent To say the diagram commutes is to say that it is true that $f = \pi_{A} \circ (f,g)$ and $g = \pi_{B} \circ (f,g)$. We call this a universal property of products. $(f,g)$ is the only function satisfying the property in question.
+
+\section*{Axiom 4: Equalizers}
+Definition:
+Let C be a category. Let $f: A \longrightarrow B$ and $g: A \longrightarrow B$ be morphisms in $hom(C)$. Given these two functions $(f,g): A \rightrightarrows B$ We can call the equalizer of $f$ and $g$ the set (a subset of $A$) $[a \in A | f(a) = g(a)]$. $eq: E \longrightarrow A$ is an equalizer for $f$ and $g$ if and only if $f \circ e = g \circ e$.
+With this definition in hand we have another axiom of ECTS. For any two morphisms $(f,g): A \rightrightarrows B$ there must be an equalizer $eq: E \longrightarrow A$. Definition: Let $C$ be a category and $A$, $B$ and $C$ be objects. Let $i: B \longrightarrow A$ be a morphism in $hom(C)$. We say $i$ is a monomorphism if for any morphisms $f$ and $g$ with domain and codomain $C \longrightarrow B$ it holds that $i \circ f \neq i \circ g$. 
+
+\section*{Axiom 5: Subobject classifiers and power objects}
+Let $A$ and $B$ be sets such that $B \subseteq A$. Let there be the set of boolean values $\Omega := [True,False]$ and the homset of morphisms $X \longrightarrow \Omega$.
+\begin{enumerate}
+  \item There exists the subobject classifier $TRUE: 1 \longrightarrow \Omega$.
+  \item For any set $A$ there exists the power object $\mathcal{P}(A)$ and the local membership relation for $A$, namely $\in_{A} : A \times \mathcal{P}(A) \longrightarrow \Omega$.
+\end{enumerate}
+Definition: The characteristic function for the set $A \subseteq X$ is the function $\delta (A): X \longrightarrow \Omega$. It is the function of $A$ in $X$.
+
+\section*{Axiom 6: The category Set is a well-pointed topos}
+If, for morphisms $f: A \longrightarrow B$ and $g: A \longrightarrow B$, it is true that $f(\alpha) = g(\alpha)$ for all $\alpha : I \longrightarrow A$, then $f=g$.
+
+\section*{Axiom 7: Choice for categories}
+If $p: A \longrightarrow B$ is an epimorphism, then there is a reverse for $p$, namely $q: B \longrightarrow A$ such that $p \in q = id_{B}$.
+
+\section*{Axiom 8: The natural number object}
+Let $1$ be a terminal object of category $C$. A natural number object is an object $N$ for which the following holds. For mappings $a: 1 \longrightarrow N$ and $b: 1  \longrightarrow X$, there is a successor morphism $s: N \longrightarrow N$ satisfying the following condition: For any object $X$ with distinguished member $b: 1 \longrightarrow X$ and successor morphism $f: X \longrightarrow X$ there is a unique function $g: N \longrightarrow X$. $g$ satisfies $g \circ a = b$ and $g \circ s = f \circ g$. 
+
+
+
+
+\begin{tikzcd}
+  A \arrow{d} \arrow{r}[near start]{\phi}[near end]{\psi}
+    & B \arrow[yshift=0.7ex]{r}{f,g} \arrow{r} 
+        & D
+    \\
+  C \arrow[red]{ru}[blue]{\eta}
+\end{tikzcd}       
+                                 
+
+
+
+\end{document}
